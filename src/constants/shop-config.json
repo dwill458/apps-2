@@ -1,0 +1,361 @@
+{
+  "outfits": [
+    {
+      "id": "outfit_farmer",
+      "type": "outfit",
+      "name": "Farmer with Straw Hat",
+      "description": "Classic gardening look with overalls and a cozy straw hat. Perfect for tending your daily tasks!",
+      "avatarType": "farmer",
+      "cost": 0,
+      "currencyType": "sunlight",
+      "icon": "🧑‍🌾",
+      "rarity": "common",
+      "unlockRequirement": null,
+      "tags": ["starter", "gardening", "classic"]
+    },
+    {
+      "id": "outfit_apron",
+      "type": "outfit",
+      "name": "Gardener with Floral Apron",
+      "description": "Adorable floral apron with striped sleeves. Shows you mean business in the garden!",
+      "avatarType": "apron",
+      "cost": 50,
+      "currencyType": "sunlight",
+      "icon": "👗",
+      "rarity": "common",
+      "unlockRequirement": null,
+      "tags": ["cute", "floral", "gardening"]
+    },
+    {
+      "id": "outfit_raincoat",
+      "type": "outfit",
+      "name": "Yellow Rain Gear",
+      "description": "Bright yellow raincoat for those rainy mood days. Sometimes you need to weather the storm!",
+      "avatarType": "raincoat",
+      "cost": 100,
+      "currencyType": "sunlight",
+      "icon": "🧥",
+      "rarity": "uncommon",
+      "unlockRequirement": null,
+      "tags": ["weather", "cozy", "protective"],
+      "moodTrigger": {
+        "condition": "lowEnergy",
+        "threshold": 30
+      }
+    },
+    {
+      "id": "outfit_explorer",
+      "type": "outfit",
+      "name": "Explorer/Botanist",
+      "description": "Khaki cargo outfit with many pockets. Ready for adventure and discovery!",
+      "avatarType": "explorer",
+      "cost": 150,
+      "currencyType": "sunlight",
+      "icon": "🔍",
+      "rarity": "rare",
+      "unlockRequirement": {
+        "type": "totalTasks",
+        "value": 20,
+        "description": "Complete 20 tasks"
+      },
+      "tags": ["adventure", "professional", "explorer"]
+    },
+    {
+      "id": "outfit_bee_costume",
+      "type": "outfit",
+      "name": "Bee Costume",
+      "description": "Buzz buzz! A sweet bee outfit complete with wings and antennae. You're a busy bee!",
+      "avatarType": "bee",
+      "cost": 200,
+      "currencyType": "sunlight",
+      "icon": "🐝",
+      "rarity": "epic",
+      "unlockRequirement": {
+        "type": "streak",
+        "value": 7,
+        "description": "Maintain a 7-day streak"
+      },
+      "tags": ["special", "cute", "streak-reward"]
+    },
+    {
+      "id": "outfit_cozy_sweater",
+      "type": "outfit",
+      "name": "Cozy Sweater",
+      "description": "Soft knit sweater for those calm, reflective days. Perfect for gentle growth.",
+      "avatarType": "sweater",
+      "cost": 75,
+      "currencyType": "sunlight",
+      "icon": "🧶",
+      "rarity": "uncommon",
+      "unlockRequirement": null,
+      "tags": ["cozy", "comfort", "relaxed"]
+    }
+  ],
+  "accessories": [
+    {
+      "id": "accessory_none",
+      "type": "accessory",
+      "name": "No Accessory",
+      "description": "Sometimes simplicity is best!",
+      "avatarType": "none",
+      "cost": 0,
+      "currencyType": "sunlight",
+      "icon": "✋",
+      "rarity": "common",
+      "unlockRequirement": null,
+      "tags": ["default"]
+    },
+    {
+      "id": "accessory_trowel",
+      "type": "accessory",
+      "name": "Garden Trowel",
+      "description": "A sturdy hand shovel for digging into your tasks.",
+      "avatarType": "trowel",
+      "cost": 0,
+      "currencyType": "sunlight",
+      "icon": "🥄",
+      "rarity": "common",
+      "unlockRequirement": null,
+      "tags": ["starter", "tool", "gardening"]
+    },
+    {
+      "id": "accessory_watering_can",
+      "type": "accessory",
+      "name": "Watering Can",
+      "description": "Essential for nurturing your growing tasks. Upgrades as you progress!",
+      "avatarType": "watering-can",
+      "cost": 0,
+      "currencyType": "sunlight",
+      "icon": "🚿",
+      "rarity": "common",
+      "unlockRequirement": null,
+      "tags": ["starter", "nurturing", "progressive"],
+      "dynamic": {
+        "scalesWithProgress": true,
+        "variants": [
+          {
+            "level": 1,
+            "name": "Basic Can",
+            "progressThreshold": 0
+          },
+          {
+            "level": 2,
+            "name": "Silver Can",
+            "progressThreshold": 50
+          },
+          {
+            "level": 3,
+            "name": "Golden Can",
+            "progressThreshold": 100
+          }
+        ]
+      }
+    },
+    {
+      "id": "accessory_rake",
+      "type": "accessory",
+      "name": "Garden Rake",
+      "description": "Perfect for clearing away mental weeds and organizing your thoughts.",
+      "avatarType": "rake",
+      "cost": 30,
+      "currencyType": "sunlight",
+      "icon": "🧹",
+      "rarity": "common",
+      "unlockRequirement": null,
+      "tags": ["cleaning", "organizing", "tool"]
+    },
+    {
+      "id": "accessory_magnifying_glass",
+      "type": "accessory",
+      "name": "Magnifying Glass",
+      "description": "For examining the details and finding hidden insights in your journey.",
+      "avatarType": "magnifying-glass",
+      "cost": 50,
+      "currencyType": "sunlight",
+      "icon": "🔍",
+      "rarity": "uncommon",
+      "unlockRequirement": {
+        "type": "totalTasks",
+        "value": 10,
+        "description": "Complete 10 tasks"
+      },
+      "tags": ["explorer", "discovery", "special"]
+    },
+    {
+      "id": "accessory_book",
+      "type": "accessory",
+      "name": "Garden Journal",
+      "description": "A leather-bound journal to document your growth journey.",
+      "avatarType": "book",
+      "cost": 80,
+      "currencyType": "sunlight",
+      "icon": "📖",
+      "rarity": "rare",
+      "unlockRequirement": {
+        "type": "totalDays",
+        "value": 5,
+        "description": "Show up for 5 days"
+      },
+      "tags": ["journal", "reflection", "wisdom"]
+    },
+    {
+      "id": "accessory_glasses",
+      "type": "accessory",
+      "name": "Reading Glasses",
+      "description": "Stylish glasses for focused work sessions.",
+      "avatarType": "glasses",
+      "cost": 60,
+      "currencyType": "sunlight",
+      "icon": "👓",
+      "rarity": "uncommon",
+      "unlockRequirement": null,
+      "tags": ["style", "focus", "smart"]
+    },
+    {
+      "id": "accessory_flower_crown",
+      "type": "accessory",
+      "name": "Flower Crown",
+      "description": "Celebrate your blooming achievements with this beautiful crown!",
+      "avatarType": "flower-crown",
+      "cost": 100,
+      "currencyType": "seeds",
+      "icon": "👑",
+      "rarity": "epic",
+      "unlockRequirement": {
+        "type": "streak",
+        "value": 14,
+        "description": "Maintain a 14-day streak"
+      },
+      "tags": ["celebration", "achievement", "special"]
+    },
+    {
+      "id": "accessory_treasure_map",
+      "type": "accessory",
+      "name": "Treasure Map",
+      "description": "X marks the spot of your next great discovery!",
+      "avatarType": "treasure",
+      "cost": 120,
+      "currencyType": "seeds",
+      "icon": "🗺️",
+      "rarity": "rare",
+      "unlockRequirement": {
+        "type": "totalTasks",
+        "value": 50,
+        "description": "Complete 50 tasks"
+      },
+      "tags": ["adventure", "goals", "special"]
+    }
+  ],
+  "bundles": [
+    {
+      "id": "bundle_starter",
+      "type": "bundle",
+      "name": "Starter Garden Kit",
+      "description": "Everything you need to begin your growth journey!",
+      "cost": 0,
+      "currencyType": "sunlight",
+      "icon": "🎁",
+      "rarity": "common",
+      "items": ["outfit_farmer", "accessory_trowel", "accessory_watering_can"],
+      "unlockRequirement": null,
+      "tags": ["starter", "free", "welcome"]
+    },
+    {
+      "id": "bundle_explorer",
+      "type": "bundle",
+      "name": "Explorer's Pack",
+      "description": "For the adventurous spirit ready to discover new horizons!",
+      "cost": 180,
+      "currencyType": "sunlight",
+      "icon": "🎒",
+      "rarity": "rare",
+      "items": ["outfit_explorer", "accessory_magnifying_glass", "accessory_treasure_map"],
+      "discount": 0.2,
+      "unlockRequirement": {
+        "type": "totalTasks",
+        "value": 15,
+        "description": "Complete 15 tasks"
+      },
+      "tags": ["adventure", "value", "special"]
+    },
+    {
+      "id": "bundle_celebration",
+      "type": "bundle",
+      "name": "Celebration Set",
+      "description": "Celebrate your achievements in style!",
+      "cost": 150,
+      "currencyType": "seeds",
+      "icon": "🎉",
+      "rarity": "epic",
+      "items": ["outfit_bee_costume", "accessory_flower_crown"],
+      "discount": 0.25,
+      "unlockRequirement": {
+        "type": "streak",
+        "value": 10,
+        "description": "Maintain a 10-day streak"
+      },
+      "tags": ["celebration", "achievement", "special"]
+    }
+  ],
+  "special": [
+    {
+      "id": "special_grace_bloom",
+      "type": "special",
+      "name": "Grace Bloom",
+      "description": "Protect your streak when life happens. Everyone needs grace sometimes! 💚",
+      "cost": 50,
+      "currencyType": "seeds",
+      "icon": "🌸",
+      "rarity": "legendary",
+      "effect": "graceBloom",
+      "maxPurchases": 3,
+      "unlockRequirement": {
+        "type": "streak",
+        "value": 3,
+        "description": "Maintain a 3-day streak"
+      },
+      "tags": ["protection", "compassion", "streak"]
+    },
+    {
+      "id": "special_time_seed",
+      "type": "special",
+      "name": "Time Seed",
+      "description": "Plant this to add 5 minutes to your daily goal. Small steps matter!",
+      "cost": 20,
+      "currencyType": "sunlight",
+      "icon": "⏰",
+      "rarity": "uncommon",
+      "effect": "increaseGoal",
+      "effectValue": 5,
+      "unlockRequirement": null,
+      "tags": ["goal", "time", "growth"]
+    }
+  ],
+  "rarity": {
+    "common": {
+      "color": "#8BA888",
+      "label": "Common",
+      "borderStyle": "solid"
+    },
+    "uncommon": {
+      "color": "#6B9B3D",
+      "label": "Uncommon",
+      "borderStyle": "dashed"
+    },
+    "rare": {
+      "color": "#5C7A58",
+      "label": "Rare",
+      "borderStyle": "dotted"
+    },
+    "epic": {
+      "color": "#FFD166",
+      "label": "Epic",
+      "borderStyle": "double"
+    },
+    "legendary": {
+      "color": "#EF8354",
+      "label": "Legendary",
+      "borderStyle": "double"
+    }
+  }
+}

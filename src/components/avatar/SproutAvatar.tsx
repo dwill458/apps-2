@@ -25,6 +25,7 @@ interface SproutAvatarProps {
   accessory?: AccessoryType;
   mood?: MoodType;
   size?: number;
+  wateringCanLevel?: 1 | 2 | 3; // For dynamic watering can progression
   onPress?: () => void;
   onLongPress?: () => void;
 }
@@ -34,6 +35,7 @@ export const SproutAvatar: React.FC<SproutAvatarProps> = ({
   accessory = 'trowel',
   mood = 'idle',
   size = 120,
+  wateringCanLevel = 1,
   onPress,
   onLongPress,
 }) => {
@@ -255,7 +257,7 @@ export const SproutAvatar: React.FC<SproutAvatarProps> = ({
         {renderOutfit(outfit, size)}
 
         {/* Accessory Layer */}
-        {renderAccessory(accessory, size)}
+        {renderAccessory(accessory, size, wateringCanLevel)}
       </Animated.View>
     </TouchableOpacity>
   );
@@ -293,12 +295,12 @@ const renderOutfit = (outfit: OutfitType, size: number) => {
 };
 
 // Render accessory based on type
-const renderAccessory = (accessory: AccessoryType, size: number) => {
+const renderAccessory = (accessory: AccessoryType, size: number, wateringCanLevel: 1 | 2 | 3 = 1) => {
   switch (accessory) {
     case 'trowel':
       return <TrowelAccessory size={size} position="right" />;
     case 'watering-can':
-      return <WateringCanAccessory size={size} position="left" />;
+      return <WateringCanAccessory size={size} position="left" level={wateringCanLevel} />;
     case 'rake':
       return <RakeAccessory size={size} position="left" />;
     case 'magnifying-glass':
