@@ -3,6 +3,7 @@
  */
 
 import { create } from 'zustand';
+import { onboardingStorage } from '../utils/storage';
 import {
   UserProfile,
   AvatarState,
@@ -15,6 +16,9 @@ import {
   JournalEntry,
   WeatherMood,
   TimerState,
+  OnboardingState,
+  OnboardingScene,
+  ThemeOption,
 } from '../types';
 
 interface CozyGrowthStore {
@@ -72,6 +76,15 @@ interface CozyGrowthStore {
   setWeatherMood: (mood: WeatherMood) => void;
   isOnboarded: boolean;
   setIsOnboarded: (value: boolean) => void;
+
+  // Onboarding
+  onboarding: OnboardingState;
+  setOnboardingScene: (scene: OnboardingScene) => void;
+  completeOnboardingStep: (step: keyof OnboardingState['progress']) => void;
+  setSproutName: (name: string) => void;
+  setSelectedTheme: (theme: ThemeOption) => void;
+  completeOnboarding: () => void;
+  incrementOnboardingTime: (seconds: number) => void;
 
   // Timer
   timer: TimerState;
@@ -313,6 +326,132 @@ export const useStore = create<CozyGrowthStore>((set, get) => ({
   setWeatherMood: (mood) => set({ weatherMood: mood }),
   isOnboarded: false,
   setIsOnboarded: (value) => set({ isOnboarded: value }),
+
+  // Onboarding
+  onboarding: {
+    version: '1.0',
+    started_at: null,
+    completed: false,
+    current_scene: 1,
+    progress: {
+      seed_planted: false,
+      sprout_named: false,
+      theme_selected: false,
+      first_task_completed: false,
+    },
+    user_data: {
+      sprout_name: null,
+      selected_theme: null,
+      first_interaction_timestamp: null,
+    },
+    session_data: {
+      times_opened: 1,
+      total_time_in_onboarding_seconds: 0,
+      scenes_completed: [],
+    },
+  },
+  setOnboardingScene: (scene) =>
+    set((state) => {
+      const scenes_completed = state.onboarding.session_data.scenes_completed;
+      if (!scenes_completed.includes(scene)) {
+        scenes_completed.push(scene);
+      }
+      const newOnboarding = {
+        ...state.onboarding,
+        current_scene: scene,
+        session_data: {
+          ...state.onboarding.session_data,
+          scenes_completed,
+        },
+      };
+      // Save to AsyncStorage
+      onboardingStorage.saveState(newOnboarding);
+      return { onboarding: newOnboarding };
+    }),
+  completeOnboardingStep: (step) =>
+    set((state) => {
+      const newOnboarding = {
+        ...state.onboarding,
+        progress: {
+          ...state.onboarding.progress,
+          [step]: true,
+        },
+      };
+      // Save to AsyncStorage
+      onboardingStorage.saveState(newOnboarding);
+      return { onboarding: newOnboarding };
+    }),
+  setSproutName: (name) =>
+    set((state) => {
+      const newOnboarding = {
+        ...state.onboarding,
+        user_data: {
+          ...state.onboarding.user_data,
+          sprout_name: name,
+        },
+        progress: {
+          ...state.onboarding.progress,
+          sprout_named: true,
+        },
+      };
+      // Save to AsyncStorage
+      onboardingStorage.saveState(newOnboarding);
+      return { onboarding: newOnboarding };
+    }),
+  setSelectedTheme: (theme) =>
+    set((state) => {
+      const newOnboarding = {
+        ...state.onboarding,
+        user_data: {
+          ...state.onboarding.user_data,
+          selected_theme: theme,
+        },
+        progress: {
+          ...state.onboarding.progress,
+          theme_selected: true,
+        },
+      };
+      // Save to AsyncStorage
+      onboardingStorage.saveState(newOnboarding);
+      return { onboarding: newOnboarding };
+    }),
+  completeOnboarding: () => {
+    const { onboarding } = get();
+    const newOnboarding = {
+      ...onboarding,
+      completed: true,
+    };
+    set({
+      isOnboarded: true,
+      onboarding: newOnboarding,
+    });
+    // Save to AsyncStorage
+    onboardingStorage.saveState(newOnboarding);
+    onboardingStorage.setOnboarded(true);
+
+    // Set user profile with sprout name
+    if (onboarding.user_data.sprout_name) {
+      set({
+        user: {
+          id: `user_${Date.now()}`,
+          name: onboarding.user_data.sprout_name,
+          createdAt: new Date(),
+          dailyGoalMinutes: 30,
+        },
+      });
+    }
+  },
+  incrementOnboardingTime: (seconds) =>
+    set((state) => ({
+      onboarding: {
+        ...state.onboarding,
+        session_data: {
+          ...state.onboarding.session_data,
+          total_time_in_onboarding_seconds:
+            state.onboarding.session_data.total_time_in_onboarding_seconds + seconds,
+        },
+      },
+    })),
 
   // Timer
   timer: {

@@ -15,8 +15,10 @@ export default function RootLayout() {
           contentStyle: { backgroundColor: '#FDFBF7' },
         }}
       >
+        <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="onboarding" options={{ headerShown: false }} />
+        <Stack.Screen name="onboarding-new" options={{ headerShown: false }} />
         <Stack.Screen
           name="create-task"
           options={{

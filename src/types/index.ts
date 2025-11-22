@@ -127,3 +127,32 @@ export interface TimerState {
   pausedAt: Date | null;
   completedAt: Date | null;
 }
+
+// Onboarding State
+export type OnboardingScene = 1 | 2 | 3 | 4;
+export type ThemeOption = 'peaceful-garden' | 'wild-bloom' | 'cozy-cottage';
+
+export interface OnboardingProgress {
+  seed_planted: boolean;
+  sprout_named: boolean;
+  theme_selected: boolean;
+  first_task_completed: boolean;
+}
+
+export interface OnboardingState {
+  version: string;
+  started_at: Date | null;
+  completed: boolean;
+  current_scene: OnboardingScene;
+  progress: OnboardingProgress;
+  user_data: {
+    sprout_name: string | null;
+    selected_theme: ThemeOption | null;
+    first_interaction_timestamp: Date | null;
+  };
+  session_data: {
+    times_opened: number;
+    total_time_in_onboarding_seconds: number;
+    scenes_completed: OnboardingScene[];
+  };
+}
