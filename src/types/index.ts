@@ -1,0 +1,114 @@
+/**
+ * Core Types for Cozy Growth App
+ */
+
+import { OutfitType, AccessoryType, MoodType } from '../constants/avatar-config';
+
+// User Profile
+export interface UserProfile {
+  id: string;
+  name: string;
+  nickname?: string;
+  createdAt: Date;
+  dailyGoalMinutes: number;
+}
+
+// Avatar
+export interface AvatarState {
+  outfit: OutfitType;
+  accessory: AccessoryType;
+  mood: MoodType;
+  isWorking: boolean;
+}
+
+// Currency
+export interface Currency {
+  sunlight: number;  // Earned by completing tasks
+  seeds: number;     // Earned by streaks
+  bloomPoints: number; // General currency
+}
+
+// Task
+export interface Task {
+  id: string;
+  title: string;
+  description?: string;
+  durationMinutes: number;
+  goalId: string;
+  status: 'pending' | 'in_progress' | 'completed' | 'skipped';
+  createdAt: Date;
+  completedAt?: Date;
+  difficulty: 'easy' | 'medium' | 'hard';
+  order: number;
+}
+
+// Goal
+export interface Goal {
+  id: string;
+  title: string;
+  description?: string;
+  status: 'active' | 'completed' | 'archived';
+  createdAt: Date;
+  completedAt?: Date;
+  plantType: PlantType;
+  progress: number; // 0-100
+  tasks: Task[];
+}
+
+// Plant Types
+export type PlantType = 'sunflower' | 'rose' | 'tulip' | 'daisy' | 'lavender';
+
+// Daily Progress
+export interface DailyProgress {
+  date: string; // YYYY-MM-DD
+  minutesCompleted: number;
+  goalMinutes: number;
+  tasksCompleted: number;
+  weedsCleared: number;
+  plantGrowth: number; // 0-100
+  moodStartOfDay?: 'sunny' | 'rainy';
+  moodEndOfDay?: 'sunny' | 'rainy';
+}
+
+// Streak
+export interface StreakData {
+  currentStreak: number;
+  longestStreak: number;
+  totalDaysShowedUp: number;
+  graceBloomsAvailable: number;
+  lastActivityDate?: string;
+}
+
+// Shop Item
+export interface ShopItem {
+  id: string;
+  type: 'outfit' | 'accessory' | 'decor' | 'plant';
+  name: string;
+  description: string;
+  cost: number;
+  currencyType: 'sunlight' | 'seeds' | 'bloomPoints';
+  unlockRequirement?: {
+    type: 'streak' | 'totalTasks' | 'totalDays';
+    value: number;
+  };
+  isUnlocked: boolean;
+  isPurchased: boolean;
+}
+
+// Journal Entry
+export interface JournalEntry {
+  id: string;
+  date: Date;
+  type: 'seed' | 'sprout' | 'bloom'; // Ideas, Tasks, Wins
+  content: string;
+  tags?: string[];
+}
+
+// Weather/Mood
+export type WeatherMood = 'sunny' | 'rainy' | 'cloudy';
+
+// Animation State
+export interface AnimationState {
+  isAnimating: boolean;
+  currentAnimation?: 'idle' | 'working' | 'happy' | 'celebrating';
+}
