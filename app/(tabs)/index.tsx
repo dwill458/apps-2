@@ -13,6 +13,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import { useRouter } from 'expo-router';
 import { GardenScene, CurrencyBar } from '../../src/components/garden';
 import { Button, Card } from '../../src/components/ui';
 import { useStore } from '../../src/store/useStore';
@@ -20,6 +21,7 @@ import { Colors, Typography, Spacing, BorderRadius, Shadow } from '../../src/con
 import * as Haptics from 'expo-haptics';
 
 export default function HomeScreen() {
+  const router = useRouter();
   const {
     user,
     avatar,
@@ -50,8 +52,8 @@ export default function HomeScreen() {
   const handleCultivate = () => {
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     setAvatarMood('working');
-    // TODO: Navigate to task selection
-    console.log('Cultivate with duration:', selectedDuration);
+    // Navigate to task creation screen
+    router.push('/create-task');
   };
 
   return (
@@ -66,9 +68,17 @@ export default function HomeScreen() {
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.greeting}>Hi, {user?.name || 'Gardener'}!</Text>
-          <TouchableOpacity style={styles.settingsButton}>
-            <Text style={styles.settingsIcon}>⚙️</Text>
-          </TouchableOpacity>
+          <View style={styles.headerButtons}>
+            <TouchableOpacity
+              style={styles.tasksButton}
+              onPress={() => router.push('/tasks')}
+            >
+              <Text style={styles.tasksIcon}>📝</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.settingsButton}>
+              <Text style={styles.settingsIcon}>⚙️</Text>
+            </TouchableOpacity>
+          </View>
         </View>
 
         {/* Garden Scene (The Game Window) */}
@@ -170,6 +180,19 @@ const styles = StyleSheet.create({
   greeting: {
     ...Typography.styles.h2,
     color: Colors.text.primary,
+  },
+  headerButtons: {
+    flexDirection: 'row',
+    gap: Spacing.sm,
+  },
+  tasksButton: {
+    width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  tasksIcon: {
+    fontSize: 24,
   },
   settingsButton: {
     width: 40,

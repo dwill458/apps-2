@@ -117,8 +117,19 @@ export const useStore = create<CozyGrowthStore>((set, get) => ({
     return false;
   },
 
-  // Goals & Tasks
-  goals: [],
+  // Goals & Tasks (with default goal)
+  goals: [
+    {
+      id: 'default_goal',
+      title: 'My Growth Garden',
+      description: 'A place for all my personal growth tasks',
+      status: 'active' as const,
+      createdAt: new Date(),
+      plantType: 'sunflower' as const,
+      progress: 0,
+      tasks: [],
+    },
+  ],
   currentGoal: null,
   addGoal: (goalData) => {
     const newGoal: Goal = {
