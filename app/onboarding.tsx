@@ -26,7 +26,7 @@ export default function OnboardingScreen() {
 
   const [step, setStep] = useState(1);
   const [name, setName] = useState('');
-  const [selectedOutfit, setSelectedOutfit] = useState<any>('gardener');
+  const [selectedOutfit, setSelectedOutfit] = useState<any>('farmer');
   const [dailyGoal, setDailyGoal] = useState(30);
 
   const handleNext = () => {

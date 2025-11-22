@@ -1,6 +1,6 @@
 /**
  * Sprout Avatar Component
- * Layered character with animations, outfits, and moods
+ * Detailed kawaii plant character with SVG-based outfits and accessories
  */
 
 import React, { useEffect } from 'react';
@@ -14,7 +14,10 @@ import Animated, {
   withSequence,
   Easing,
 } from 'react-native-reanimated';
-import { OutfitType, AccessoryType, MoodType } from '../../constants/avatar-config';
+import Svg, { Circle, Ellipse, Path, G } from 'react-native-svg';
+import { OutfitType, AccessoryType, MoodType, AvatarColors } from '../../constants/avatar-config';
+import { FarmerOutfit, ApronOutfit, RaincoatOutfit, ExplorerOutfit } from './outfits';
+import { TrowelAccessory, WateringCanAccessory, RakeAccessory, MagnifyingGlassAccessory } from './accessories';
 import * as Haptics from 'expo-haptics';
 
 interface SproutAvatarProps {
@@ -27,8 +30,8 @@ interface SproutAvatarProps {
 }
 
 export const SproutAvatar: React.FC<SproutAvatarProps> = ({
-  outfit = 'gardener',
-  accessory = 'watering-can',
+  outfit = 'farmer',
+  accessory = 'trowel',
   mood = 'idle',
   size = 120,
   onPress,
@@ -151,235 +154,178 @@ export const SproutAvatar: React.FC<SproutAvatarProps> = ({
       activeOpacity={0.9}
       disabled={!onPress && !onLongPress}
     >
-      <Animated.View style={[styles.container, { width: size, height: size }, animatedStyle]}>
-        {/* Layer 1: Body */}
-        <View style={[styles.body, { width: size * 0.8, height: size * 0.8 }]}>
-          <View style={styles.bodyGreen} />
+      <Animated.View style={[styles.container, { width: size, height: size * 1.5 }, animatedStyle]}>
+        {/* Shadow */}
+        <View style={[styles.shadow, { width: size * 0.7, bottom: -size * 0.1 }]} />
 
-          {/* Leaves on top */}
-          <View style={styles.leavesContainer}>
-            <View style={[styles.leaf, styles.leafLeft]} />
-            <View style={[styles.leaf, styles.leafRight]} />
-          </View>
-        </View>
+        {/* Main Body (Turnip/Radish shaped) */}
+        <Svg width={size} height={size} viewBox="0 0 100 100" style={styles.bodyContainer}>
+          <G>
+            {/* Body shape - egg shaped, wider at bottom */}
+            <Ellipse
+              cx="50"
+              cy="50"
+              rx="42.5"
+              ry="50"
+              fill={AvatarColors.bodyGreen}
+              stroke={AvatarColors.outline}
+              strokeWidth="3"
+            />
+            {/* Gradient highlight effect */}
+            <Ellipse
+              cx="50"
+              cy="45"
+              rx="40"
+              ry="45"
+              fill={AvatarColors.highlightGreen}
+              opacity="0.3"
+            />
+            {/* White highlight dots for glossy effect */}
+            <Circle cx="35" cy="25" r="4" fill="#FFFFFF" opacity="0.7" />
+            <Circle cx="42" cy="22" r="3" fill="#FFFFFF" opacity="0.6" />
+            <Circle cx="38" cy="32" r="2.5" fill="#FFFFFF" opacity="0.5" />
 
-        {/* Layer 2: Face */}
-        <View style={styles.faceContainer}>
-          <Animated.View style={[styles.eye, styles.eyeLeft, eyeAnimatedStyle]} />
-          <Animated.View style={[styles.eye, styles.eyeRight, eyeAnimatedStyle]} />
+            {/* Two symmetrical leaves on top */}
+            <G transform="translate(50, 5)">
+              {/* Left leaf */}
+              <G transform="rotate(-45)">
+                <Ellipse
+                  cx="0"
+                  cy="-15"
+                  rx="10"
+                  ry="15"
+                  fill={AvatarColors.leafGreen}
+                  stroke={AvatarColors.outline}
+                  strokeWidth="2.5"
+                />
+                {/* Leaf vein */}
+                <Path
+                  d="M 0,-25 L 0,-5"
+                  stroke={AvatarColors.leafVein}
+                  strokeWidth="2"
+                />
+              </G>
+              {/* Right leaf */}
+              <G transform="rotate(45)">
+                <Ellipse
+                  cx="0"
+                  cy="-15"
+                  rx="10"
+                  ry="15"
+                  fill={AvatarColors.leafGreen}
+                  stroke={AvatarColors.outline}
+                  strokeWidth="2.5"
+                />
+                {/* Leaf vein */}
+                <Path
+                  d="M 0,-25 L 0,-5"
+                  stroke={AvatarColors.leafVein}
+                  strokeWidth="2"
+                />
+              </G>
+            </G>
 
-          {/* Cheeks */}
-          <View style={[styles.cheek, styles.cheekLeft]} />
-          <View style={[styles.cheek, styles.cheekRight]} />
+            {/* Face - Kawaii style */}
+            <G>
+              {/* Eyes - solid black circles */}
+              <Animated.View style={eyeAnimatedStyle}>
+                <Svg width={size} height={size} viewBox="0 0 100 100" style={{ position: 'absolute' }}>
+                  <Circle cx="37.5" cy="35" r="4" fill={AvatarColors.outline} />
+                  <Circle cx="62.5" cy="35" r="4" fill={AvatarColors.outline} />
+                </Svg>
+              </Animated.View>
 
-          {/* Mouth */}
-          <View style={[styles.mouth, getMouthStyle(mood)]} />
-        </View>
+              {/* Pink cheeks */}
+              <Circle cx="32" cy="42" r="6" fill={AvatarColors.cheekPink} opacity="0.6" />
+              <Circle cx="68" cy="42" r="6" fill={AvatarColors.cheekPink} opacity="0.6" />
 
-        {/* Layer 3: Outfit */}
-        <View style={styles.outfitContainer}>
-          {renderOutfit(outfit, size)}
-        </View>
+              {/* Smile - simple curved line */}
+              <Path
+                d={getMouthPath(mood)}
+                stroke={AvatarColors.outline}
+                strokeWidth="2.5"
+                fill="none"
+                strokeLinecap="round"
+              />
+            </G>
+          </G>
+        </Svg>
 
-        {/* Layer 4: Accessory */}
-        <View style={styles.accessoryContainer}>
-          {renderAccessory(accessory, size)}
-        </View>
+        {/* Outfit Layer */}
+        {renderOutfit(outfit, size)}
+
+        {/* Accessory Layer */}
+        {renderAccessory(accessory, size)}
       </Animated.View>
     </TouchableOpacity>
   );
 };
 
-// Helper function to get mouth style based on mood
-const getMouthStyle = (mood: MoodType) => {
+// Helper function to get mouth path based on mood
+const getMouthPath = (mood: MoodType): string => {
   switch (mood) {
     case 'happy':
     case 'celebrating':
-      return styles.mouthHappy;
+      return 'M 40,48 Q 50,54 60,48'; // Big smile
     case 'sad':
-      return styles.mouthSad;
+      return 'M 40,52 Q 50,46 60,52'; // Frown
+    case 'working':
+      return 'M 42,50 Q 50,52 58,50'; // Slight smile
     default:
-      return styles.mouthNeutral;
+      return 'M 42,50 L 58,50'; // Neutral line
   }
 };
 
-// Render outfit (placeholder - will be replaced with actual images/SVGs)
+// Render outfit based on type
 const renderOutfit = (outfit: OutfitType, size: number) => {
-  const colors = {
-    gardener: '#8B7355',
-    raincoat: '#FFD166',
-    apron: '#EF8354',
-    explorer: '#8BA888',
-    bee: '#FFD166',
-    sweater: '#F4A259',
-  };
-
-  return (
-    <View
-      style={[
-        styles.outfitPlaceholder,
-        {
-          backgroundColor: colors[outfit],
-          width: size * 0.6,
-          height: size * 0.4,
-        },
-      ]}
-    />
-  );
+  switch (outfit) {
+    case 'farmer':
+      return <FarmerOutfit size={size} />;
+    case 'apron':
+      return <ApronOutfit size={size} />;
+    case 'raincoat':
+      return <RaincoatOutfit size={size} />;
+    case 'explorer':
+      return <ExplorerOutfit size={size} />;
+    default:
+      return <FarmerOutfit size={size} />;
+  }
 };
 
-// Render accessory (placeholder - will be replaced with actual images/SVGs)
+// Render accessory based on type
 const renderAccessory = (accessory: AccessoryType, size: number) => {
-  const colors = {
-    'watering-can': '#87CEEB',
-    'spade': '#8B7355',
-    'book': '#D4C4A8',
-    'glasses': '#4A4036',
-    'flower-crown': '#EF8354',
-    'treasure-chest': '#FFD166',
-  };
-
-  return (
-    <View
-      style={[
-        styles.accessoryPlaceholder,
-        {
-          backgroundColor: colors[accessory],
-          width: size * 0.3,
-          height: size * 0.3,
-        },
-      ]}
-    />
-  );
+  switch (accessory) {
+    case 'trowel':
+      return <TrowelAccessory size={size} position="right" />;
+    case 'watering-can':
+      return <WateringCanAccessory size={size} position="left" />;
+    case 'rake':
+      return <RakeAccessory size={size} position="left" />;
+    case 'magnifying-glass':
+      return <MagnifyingGlassAccessory size={size} position="left" />;
+    case 'none':
+      return null;
+    default:
+      return null;
+  }
 };
 
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     position: 'relative',
   },
-
-  // Body
-  body: {
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
+  bodyContainer: {
+    zIndex: 1,
   },
-  bodyGreen: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#B5D4B3',
+  shadow: {
+    position: 'absolute',
+    height: 15,
+    backgroundColor: AvatarColors.farmer.strawBand,
+    opacity: 0.3,
     borderRadius: 999,
-    borderWidth: 3,
-    borderColor: '#8BA888',
-  },
-
-  // Leaves
-  leavesContainer: {
-    position: 'absolute',
-    top: -15,
-    flexDirection: 'row',
-    gap: 5,
-  },
-  leaf: {
-    width: 30,
-    height: 40,
-    backgroundColor: '#5C7A58',
-    borderRadius: 20,
-    borderWidth: 2,
-    borderColor: '#3D5A3A',
-  },
-  leafLeft: {
-    transform: [{ rotate: '-15deg' }],
-  },
-  leafRight: {
-    transform: [{ rotate: '15deg' }],
-  },
-
-  // Face
-  faceContainer: {
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  eye: {
-    width: 8,
-    height: 8,
-    backgroundColor: '#4A4036',
-    borderRadius: 999,
-    position: 'absolute',
-  },
-  eyeLeft: {
-    left: -12,
-    top: -5,
-  },
-  eyeRight: {
-    right: -12,
-    top: -5,
-  },
-
-  // Cheeks
-  cheek: {
-    width: 12,
-    height: 8,
-    backgroundColor: '#FFB88C',
-    borderRadius: 999,
-    position: 'absolute',
-    opacity: 0.6,
-  },
-  cheekLeft: {
-    left: -20,
-    top: 5,
-  },
-  cheekRight: {
-    right: -20,
-    top: 5,
-  },
-
-  // Mouth
-  mouth: {
-    width: 20,
-    height: 10,
-    backgroundColor: '#4A4036',
-    position: 'absolute',
-    top: 15,
-  },
-  mouthNeutral: {
-    borderRadius: 5,
-  },
-  mouthHappy: {
-    borderTopLeftRadius: 0,
-    borderTopRightRadius: 0,
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
-  },
-  mouthSad: {
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
-  },
-
-  // Outfit (placeholder)
-  outfitContainer: {
-    position: 'absolute',
-    bottom: -10,
-  },
-  outfitPlaceholder: {
-    borderRadius: 10,
-    opacity: 0.8,
-  },
-
-  // Accessory (placeholder)
-  accessoryContainer: {
-    position: 'absolute',
-    bottom: -15,
-    right: -20,
-  },
-  accessoryPlaceholder: {
-    borderRadius: 8,
-    opacity: 0.9,
+    zIndex: 0,
   },
 });
 

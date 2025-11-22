@@ -92,8 +92,8 @@ export const useStore = create<CozyGrowthStore>((set, get) => ({
 
   // Initial Avatar
   avatar: {
-    outfit: 'gardener',
-    accessory: 'watering-can',
+    outfit: 'farmer',
+    accessory: 'trowel',
     mood: 'idle',
     isWorking: false,
   },

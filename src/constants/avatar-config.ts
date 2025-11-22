@@ -3,62 +3,91 @@
  * Defines available outfits, accessories, and moods for the Sprout character
  */
 
-export type OutfitType = 'gardener' | 'raincoat' | 'apron' | 'explorer' | 'bee' | 'sweater';
-export type AccessoryType = 'watering-can' | 'spade' | 'book' | 'glasses' | 'flower-crown' | 'treasure-chest';
+export type OutfitType = 'farmer' | 'apron' | 'raincoat' | 'explorer';
+export type AccessoryType = 'trowel' | 'watering-can' | 'rake' | 'magnifying-glass' | 'none';
 export type MoodType = 'happy' | 'working' | 'idle' | 'sad' | 'celebrating';
 
+// Color palette from specification
+export const AvatarColors = {
+  bodyGreen: '#A8D672',
+  highlightGreen: '#C5E89B',
+  leafGreen: '#6B9B3D',
+  leafVein: '#4A7C2C',
+  outline: '#3D2817',
+  cheekPink: '#FFB6C1',
+
+  // Outfit colors
+  farmer: {
+    denim: '#6B9AC4',
+    plaid: '#C19A6B',
+    plaidDark: '#8B6F47',
+    straw: '#D4A574',
+    strawBand: '#8B7355',
+    boots: '#8B5A3C',
+  },
+  apron: {
+    base: '#F5E6D3',
+    trim: '#FF9B85',
+    stripes: '#7BA05B',
+    pants: '#7BA05B',
+    boots: '#8B5A3C',
+  },
+  raincoat: {
+    yellow: '#FFD700',
+    pants: '#7BA05B',
+  },
+  explorer: {
+    khaki: '#C4A574',
+    cargo: '#B5A179',
+    boots: '#8B5A3C',
+    brown: '#8B5A3C',
+  },
+
+  // Accessory colors
+  metal: '#C0C0C0',
+  wood: '#8B5A3C',
+  bucket: '#D4A574',
+};
+
 export const Outfits: Record<OutfitType, { name: string; unlockCost: number; unlockStreak?: number }> = {
-  gardener: {
-    name: 'Gardener Hat & Overalls',
+  farmer: {
+    name: 'Farmer with Straw Hat',
     unlockCost: 0, // Default outfit
   },
   apron: {
-    name: 'Floral Apron',
+    name: 'Gardener with Floral Apron',
     unlockCost: 50,
   },
   raincoat: {
-    name: 'Yellow Raincoat',
+    name: 'Yellow Rain Gear',
     unlockCost: 100,
   },
   explorer: {
-    name: 'Explorer Vest',
+    name: 'Explorer/Botanist',
     unlockCost: 150,
-  },
-  bee: {
-    name: 'Bee Costume',
-    unlockCost: 200,
-    unlockStreak: 7,
-  },
-  sweater: {
-    name: 'Cozy Sweater',
-    unlockCost: 100,
   },
 };
 
 export const Accessories: Record<AccessoryType, { name: string; unlockCost: number }> = {
+  none: {
+    name: 'No Accessory',
+    unlockCost: 0,
+  },
+  trowel: {
+    name: 'Garden Trowel',
+    unlockCost: 0, // Default for farmer
+  },
   'watering-can': {
     name: 'Watering Can',
-    unlockCost: 0, // Default
+    unlockCost: 0, // Default for apron
   },
-  spade: {
-    name: 'Garden Spade',
+  rake: {
+    name: 'Garden Rake',
     unlockCost: 30,
   },
-  book: {
-    name: 'Seed Catalog',
+  'magnifying-glass': {
+    name: 'Magnifying Glass',
     unlockCost: 50,
-  },
-  glasses: {
-    name: 'Reading Glasses',
-    unlockCost: 40,
-  },
-  'flower-crown': {
-    name: 'Flower Crown',
-    unlockCost: 80,
-  },
-  'treasure-chest': {
-    name: 'Treasure Chest',
-    unlockCost: 120,
   },
 };
 
