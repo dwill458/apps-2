@@ -28,11 +28,15 @@ export default function HomeScreen() {
     currency,
     dailyProgress,
     weatherMood,
+    tasks,
+    addTask,
+    startTimer,
     setWeatherMood,
     setAvatarMood,
   } = useStore();
 
   const [selectedDuration, setSelectedDuration] = useState<number>(10);
+  const pendingTasks = tasks.filter(t => t.status === 'pending');
 
   const handleWeatherToggle = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -51,9 +55,50 @@ export default function HomeScreen() {
 
   const handleCultivate = () => {
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-    setAvatarMood('working');
-    // Navigate to task creation screen
-    router.push('/create-task');
+
+    // If there are pending tasks, use the first one; otherwise create a quick focus task
+    if (pendingTasks.length > 0) {
+      // Start timer with the first pending task
+      const task = pendingTasks[0];
+      startTimer(task.id, task.durationMinutes);
+      router.push('/timer');
+    } else {
+      // Create a quick focus task with a generated ID
+      const taskId = `task_${Date.now()}`;
+      const quickTask = {
+        id: taskId,
+        title: 'Focus Session',
+        description: 'A focused work session to nurture your growth',
+        durationMinutes: selectedDuration,
+        goalId: 'default_goal',
+        status: 'pending' as const,
+        difficulty: 'easy' as const,
+        order: 0,
+        createdAt: new Date(),
+      };
+
+      // Create the task by calling addTask without id and createdAt (as per store interface)
+      const taskData = {
+        title: quickTask.title,
+        description: quickTask.description,
+        durationMinutes: quickTask.durationMinutes,
+        goalId: quickTask.goalId,
+        status: quickTask.status,
+        difficulty: quickTask.difficulty,
+        order: quickTask.order,
+      };
+
+      addTask(taskData);
+
+      // Start timer - need to get the actual task that was created
+      setTimeout(() => {
+        const createdTask = tasks.find(t => t.title === 'Focus Session' && t.status === 'pending');
+        if (createdTask) {
+          startTimer(createdTask.id, selectedDuration);
+          router.push('/timer');
+        }
+      }, 100);
+    }
   };
 
   return (
@@ -142,7 +187,11 @@ export default function HomeScreen() {
 
           {/* Main CTA */}
           <Button
-            title="🌱 Cultivate One Tiny Step"
+            title={
+              pendingTasks.length > 0
+                ? `🌱 Start: ${pendingTasks[0].title.substring(0, 25)}${pendingTasks[0].title.length > 25 ? '...' : ''}`
+                : '🌱 Start Focus Session'
+            }
             variant="wood"
             size="lg"
             onPress={handleCultivate}

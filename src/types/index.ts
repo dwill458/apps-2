@@ -115,3 +115,15 @@ export interface AnimationState {
   isAnimating: boolean;
   currentAnimation?: 'idle' | 'working' | 'happy' | 'celebrating';
 }
+
+// Timer State
+export interface TimerState {
+  isActive: boolean;
+  isPaused: boolean;
+  duration: number; // Total duration in seconds
+  elapsed: number; // Elapsed time in seconds
+  taskId: string | null;
+  startedAt: Date | null;
+  pausedAt: Date | null;
+  completedAt: Date | null;
+}

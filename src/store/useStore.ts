@@ -14,6 +14,7 @@ import {
   ShopItem,
   JournalEntry,
   WeatherMood,
+  TimerState,
 } from '../types';
 
 interface CozyGrowthStore {
@@ -71,6 +72,15 @@ interface CozyGrowthStore {
   setWeatherMood: (mood: WeatherMood) => void;
   isOnboarded: boolean;
   setIsOnboarded: (value: boolean) => void;
+
+  // Timer
+  timer: TimerState;
+  startTimer: (taskId: string, durationMinutes: number) => void;
+  pauseTimer: () => void;
+  resumeTimer: () => void;
+  stopTimer: () => void;
+  updateTimerElapsed: (elapsed: number) => void;
+  completeTimer: () => void;
 }
 
 const getTodayString = () => new Date().toISOString().split('T')[0];
@@ -303,6 +313,92 @@ export const useStore = create<CozyGrowthStore>((set, get) => ({
   setWeatherMood: (mood) => set({ weatherMood: mood }),
   isOnboarded: false,
   setIsOnboarded: (value) => set({ isOnboarded: value }),
+
+  // Timer
+  timer: {
+    isActive: false,
+    isPaused: false,
+    duration: 0,
+    elapsed: 0,
+    taskId: null,
+    startedAt: null,
+    pausedAt: null,
+    completedAt: null,
+  },
+  startTimer: (taskId, durationMinutes) => {
+    const duration = durationMinutes * 60; // Convert to seconds
+    set({
+      timer: {
+        isActive: true,
+        isPaused: false,
+        duration,
+        elapsed: 0,
+        taskId,
+        startedAt: new Date(),
+        pausedAt: null,
+        completedAt: null,
+      },
+    });
+    // Update task status
+    get().updateTask(taskId, { status: 'in_progress' });
+    get().setCurrentTask(taskId);
+    get().setAvatarMood('working');
+  },
+  pauseTimer: () => {
+    set((state) => ({
+      timer: {
+        ...state.timer,
+        isPaused: true,
+        pausedAt: new Date(),
+      },
+    }));
+  },
+  resumeTimer: () => {
+    set((state) => ({
+      timer: {
+        ...state.timer,
+        isPaused: false,
+        pausedAt: null,
+      },
+    }));
+  },
+  stopTimer: () => {
+    set({
+      timer: {
+        isActive: false,
+        isPaused: false,
+        duration: 0,
+        elapsed: 0,
+        taskId: null,
+        startedAt: null,
+        pausedAt: null,
+        completedAt: null,
+      },
+    });
+    get().setAvatarMood('idle');
+  },
+  updateTimerElapsed: (elapsed) => {
+    set((state) => ({
+      timer: {
+        ...state.timer,
+        elapsed,
+      },
+    }));
+  },
+  completeTimer: () => {
+    const { timer } = get();
+    if (timer.taskId) {
+      get().completeTask(timer.taskId);
+      get().setAvatarMood('happy');
+      set((state) => ({
+        timer: {
+          ...state.timer,
+          isActive: false,
+          completedAt: new Date(),
+        },
+      }));
+    }
+  },
 }));
 
 export default useStore;
