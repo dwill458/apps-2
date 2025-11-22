@@ -1,0 +1,137 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  db:
+    image: postgres:15-alpine
+    container_name: sports_betting_db
+    environment:
+      POSTGRES_DB: sports_betting_db
+      POSTGRES_USER: sportsuser
+      POSTGRES_PASSWORD: sportspass123
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sportsuser -d sports_betting_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - sports_network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: sports_betting_redis
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    networks:
+      - sports_network
+
+  # FastAPI Backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: sports_betting_backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://sportsuser:sportspass123@db:5432/sports_betting_db
+      - REDIS_URL=redis://redis:6379/0
+      - ODDS_API_KEY=${ODDS_API_KEY:-demo_key}
+      - ENVIRONMENT=development
+      - DEBUG=True
+      - SECRET_KEY=dev-secret-key-change-in-production-please
+      - ENABLE_GEO_FENCING=True
+      - ALLOWED_STATES=NJ,PA,IN,WV,CO,TN,VA,IA,IL,MI,AZ,LA,NY,CT,KS,MD,OH,WY,MA
+      - CORS_ORIGINS=http://localhost:3000,http://frontend:3000
+    volumes:
+      - ./backend:/app
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    networks:
+      - sports_network
+
+  # React Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: build
+    container_name: sports_betting_frontend
+    ports:
+      - "3000:5173"
+    environment:
+      - VITE_API_URL=http://localhost:8000/api/v1
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: npm run dev -- --host 0.0.0.0 --port 5173
+    depends_on:
+      - backend
+    networks:
+      - sports_network
+
+  # Celery Worker (for background tasks)
+  celery_worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: sports_betting_celery_worker
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://sportsuser:sportspass123@db:5432/sports_betting_db
+      - REDIS_URL=redis://redis:6379/0
+      - ODDS_API_KEY=${ODDS_API_KEY:-demo_key}
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - db
+      - redis
+    command: celery -A celery_app worker -l info
+    networks:
+      - sports_network
+
+  # Celery Beat (for scheduled tasks)
+  celery_beat:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: sports_betting_celery_beat
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://sportsuser:sportspass123@db:5432/sports_betting_db
+      - REDIS_URL=redis://redis:6379/0
+      - ODDS_API_KEY=${ODDS_API_KEY:-demo_key}
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - db
+      - redis
+    command: celery -A celery_app beat -l info
+    networks:
+      - sports_network
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  sports_network:
+    driver: bridge

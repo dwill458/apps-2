@@ -1,0 +1,9 @@
+src/lib/api/completions.ts(31,25): error TS1127: Invalid character.
+src/lib/api/completions.ts(100,1): error TS1160: Unterminated template literal.
+src/lib/api/goals.ts(80,16): error TS1127: Invalid character.
+src/lib/api/goals.ts(313,1): error TS1160: Unterminated template literal.
+src/lib/api/journal.ts(76,16): error TS1127: Invalid character.
+src/lib/api/journal.ts(142,1): error TS1160: Unterminated template literal.
+src/store/useSync.ts(71,15): error TS1127: Invalid character.
+src/store/useSync.ts(71,16): error TS1136: Property assignment expected.
+src/store/useSync.ts(234,1): error TS1160: Unterminated template literal.

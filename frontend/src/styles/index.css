@@ -1,0 +1,339 @@
+/* Cozy Growth - Global Styles */
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-sage-200;
+  }
+
+  body {
+    @apply antialiased bg-cream text-sage-800 font-sans;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+  }
+
+  /* Custom scrollbar - Cozy style */
+  ::-webkit-scrollbar {
+    @apply w-3 h-3;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-cream-100;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-sage-300 rounded-full hover:bg-sage-400;
+  }
+
+  /* Selection color */
+  ::selection {
+    @apply bg-gold-200 text-sage-900;
+  }
+
+  /* Focus visible outline */
+  *:focus-visible {
+    @apply outline-none ring-3 ring-gold ring-offset-2 ring-offset-cream;
+  }
+}
+
+@layer components {
+  /* Cozy Glass Card */
+  .glass {
+    @apply backdrop-blur-xl bg-cream-50/80
+           border border-sage-200/50
+           shadow-cozy rounded-cozy-lg;
+  }
+
+  .glass-hover {
+    @apply glass transition-all duration-300
+           hover:bg-cream-50/90
+           hover:shadow-cozy-lg hover:scale-[1.02];
+  }
+
+  /* Wood Texture Button Base */
+  .wood-button {
+    @apply relative overflow-hidden
+           bg-wood-500 text-white
+           border-2 border-wood-600
+           shadow-cozy;
+  }
+
+  .wood-button::before {
+    content: '';
+    @apply absolute inset-0 bg-wood-texture opacity-30;
+  }
+
+  /* Cozy Button Styles */
+  .btn {
+    @apply px-6 py-3 rounded-cozy font-semibold text-base
+           transition-all duration-200
+           focus:outline-none focus:ring-3 focus:ring-gold focus:ring-offset-2
+           disabled:opacity-50 disabled:cursor-not-allowed
+           min-h-[44px] inline-flex items-center justify-center gap-2;
+  }
+
+  .btn-primary {
+    @apply btn wood-button
+           hover:bg-wood-600
+           active:scale-95;
+  }
+
+  .btn-secondary {
+    @apply btn bg-sage-500 text-white
+           hover:bg-sage-600
+           focus:ring-sage-400
+           active:scale-95;
+  }
+
+  .btn-ghost {
+    @apply btn bg-transparent text-sage-700 border-2 border-sage-300
+           hover:bg-sage-50 hover:border-sage-400
+           active:scale-95;
+  }
+
+  /* Cozy Input Styles */
+  .input {
+    @apply w-full px-4 py-3 rounded-cozy min-h-[52px]
+           bg-white border-2 border-sage-200
+           focus:border-sage-500 focus:ring-3 focus:ring-sage-200
+           transition-all duration-200
+           placeholder:text-sage-400
+           text-sage-800 font-sans text-base;
+  }
+
+  .textarea {
+    @apply input min-h-[120px] resize-y;
+  }
+
+  /* Cozy Badge Styles */
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-pill
+           text-sm font-semibold gap-1;
+  }
+
+  .badge-success {
+    @apply badge bg-sage-100 text-sage-700 border border-sage-300;
+  }
+
+  .badge-energy-low {
+    @apply badge bg-moss-100 text-moss-700 border border-moss-300;
+  }
+
+  .badge-energy-medium {
+    @apply badge bg-sage-100 text-sage-700 border border-sage-300;
+  }
+
+  .badge-energy-high {
+    @apply badge bg-gold-100 text-gold-700 border border-gold-300;
+  }
+
+  .badge-difficulty-easy {
+    @apply badge bg-sage-50 text-sage-600;
+  }
+
+  .badge-difficulty-medium {
+    @apply badge bg-moss-100 text-moss-700;
+  }
+
+  .badge-difficulty-hard {
+    @apply badge bg-coral-100 text-coral-700;
+  }
+
+  /* Cozy Card Styles */
+  .card {
+    @apply glass p-cozy space-y-4;
+  }
+
+  .card-hover {
+    @apply glass-hover p-cozy space-y-4 cursor-pointer;
+  }
+
+  /* Text gradients */
+  .text-gradient-sage {
+    @apply bg-clip-text text-transparent bg-gradient-to-r
+           from-sage-500 to-moss-600;
+  }
+
+  .text-gradient-gold {
+    @apply bg-clip-text text-transparent bg-gradient-to-r
+           from-gold-400 to-gold-600;
+  }
+
+  /* Vine Progress */
+  .vine-progress {
+    @apply relative w-full h-3 bg-sage-100 rounded-pill overflow-hidden;
+  }
+
+  .vine-progress-fill {
+    @apply h-full bg-gradient-to-r from-sage-400 to-moss-500 rounded-pill
+           transition-all duration-500 ease-out;
+  }
+
+  /* Plant Stage Indicators */
+  .plant-seed {
+    @apply text-4xl opacity-70;
+  }
+
+  .plant-sprout {
+    @apply text-5xl opacity-80;
+  }
+
+  .plant-growing {
+    @apply text-6xl opacity-90;
+  }
+
+  .plant-mature {
+    @apply text-7xl;
+  }
+
+  .plant-blooming {
+    @apply text-8xl animate-pulse-gentle;
+  }
+}
+
+@layer utilities {
+  /* Custom animations */
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @keyframes grow {
+    0% { transform: scale(0.8); opacity: 0; }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  @keyframes bloom {
+    0% { transform: scale(0.3) rotate(-5deg); opacity: 0; }
+    50% { transform: scale(1.1) rotate(2deg); }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+
+  @keyframes pulse-gentle {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+
+  @keyframes confetti {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* Cozy spacing utilities */
+  .space-cozy > * + * {
+    margin-top: 1.5rem;
+  }
+
+  .space-cozy-lg > * + * {
+    margin-top: 2rem;
+  }
+
+  .space-cozy-xl > * + * {
+    margin-top: 3rem;
+  }
+
+  /* Touch target minimum */
+  .touch-target {
+    @apply min-w-[44px] min-h-[44px];
+  }
+
+  /* Text balance */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Glow animation for celebrations */
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes glow {
+    from {
+      box-shadow: 0 0 10px rgba(255, 217, 120, 0.4);
+    }
+    to {
+      box-shadow: 0 0 20px rgba(255, 217, 120, 0.8);
+    }
+  }
+
+  /* Shimmer effect */
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 217, 120, 0.3) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
+  }
+
+  /* Paper texture */
+  .paper-bg {
+    @apply bg-paper-texture;
+  }
+
+  /* Accessibility helpers */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    * {
+      border-width: 2px !important;
+    }
+
+    .btn {
+      @apply border-4;
+    }
+  }
+}
+
+/* Print styles */
+@media print {
+  body {
+    @apply bg-white text-black;
+  }
+
+  .glass {
+    @apply bg-white border-black;
+  }
+
+  button, .btn {
+    @apply border border-black;
+  }
+}
